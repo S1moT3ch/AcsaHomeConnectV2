@@ -1,0 +1,18 @@
+/* foglio di stile per il form di registrazione utente*/
+/* le regole segnate come "!important" servono ad avere priorità rispetto a quelle applicate con MaterialUI*/
+
+.register-title {
+    color: #282c34 !important;
+    font-size: 20px !important;
+}
+
+.form-input {
+    flex: 0 0 48%;
+}
+
+/* media query per gestire display più piccoli */
+@media (max-width: 760px) {
+    .form-input {
+        flex: 0 0 100%;
+    }
+}

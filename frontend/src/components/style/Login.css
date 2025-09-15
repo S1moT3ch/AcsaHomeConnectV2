@@ -1,0 +1,45 @@
+/* foglio di stile per la pagina di login */
+/* le regole segnate come "!important" servono ad avere priorità rispetto a quelle applicate con MaterialUI */
+.login-container {
+    background-color: #abeece;
+    width: 40rem;
+    max-width: 600px;
+}
+
+.logo-container {
+    text-align: center;
+}
+
+.logo-container img {
+    width: 70%;
+    height: auto;
+}
+
+.custom-text {
+    font-weight: bold;
+    font-size: 1rem !important;
+    color: rgba(3, 61, 128, 0.38);
+}
+
+.submit-button {
+    background-color: #28a745 !important;
+    width: 6rem;
+    height: 2rem;
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 10px 20px !important;
+    font-size: 0.7rem !important;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #28492e !important;
+}
+
+ /* media query per gestire display più piccoli */
+@media (max-width: 760px) {
+    .login-container {
+        width: 90%;
+        max-width: none;
+    }
+}
