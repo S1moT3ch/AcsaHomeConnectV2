@@ -1,8 +1,6 @@
 //import dipendenze e moduli necessari
 const express = require('express');
 const router = express.Router();
-const axios = require('axios');
-const qs = require('querystring');
 const authController = require('../controllers/authController');
 const  { verifyAccessToken } = require('../middlewares/authMiddleware');
 
