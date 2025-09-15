@@ -9,6 +9,7 @@ const socketio = require('socket.io');
 
 //routers
 const authRoutes = require('./routes/authRoutes');
+const daikinRoutes = require('./routes/daikinRoutes');
 
 const app = express(); //creazione dell'app con il framework express
 const server = http.createServer(app); //creazione server http con l'app Express come parametro
@@ -69,6 +70,7 @@ app.use(cookieParser());
 
 //routes API
 app.use('/api/auth', authRoutes);
+app.use(daikinRoutes);
 
 // Route di base per test
 app.get('/',(req, res) => {
