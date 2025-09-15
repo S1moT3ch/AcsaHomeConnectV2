@@ -15,7 +15,7 @@ router.get('/auth/daikin/callback', async (req, res) => {
         code,
         client_id: process.env.CLIENT_ID,
         client_secret: process.env.CLIENT_SECRET,
-        redirect_uri: "https://acsahomeconnectv2-production.up.railway.app/"  // deve combaciare!
+        redirect_uri: "https://acsahomeconnectv2-production.up.railway.app"  // deve combaciare!
     }), { headers: { "Content-Type": "application/x-www-form-urlencoded" }});
 
     req.session.accessToken = tokenResp.data.access_token;
