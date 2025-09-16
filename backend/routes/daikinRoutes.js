@@ -119,7 +119,7 @@ router.put('/api/devices/:id/control', verifyAccessToken, async (req, res) => {
 
     try {
         const resp = await axios.put(
-            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}`,
+            `https://api.onecta.daikineurope.com/v1/devices/${deviceId}`,
             body,
             {
                 headers: {
