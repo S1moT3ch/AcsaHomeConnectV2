@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const http = require('http');
 const cors = require('cors');
 const socketio = require('socket.io');
+const session = require("express-session");
 
 //routers
 const authRoutes = require('./routes/authRoutes');
@@ -67,6 +68,13 @@ app.use(cors({
 app.use(express.json())
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "supersecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
 
 //routes API
 app.use('/api/auth', authRoutes);
