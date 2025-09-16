@@ -60,7 +60,7 @@ router.get("/auth/daikin/callback", verifyDaikinAccessToken, conditionerControll
 // 3️⃣ Lista dispositivi
 router.get("/api/devices", verifyDaikinAccessToken, conditionerController.getDaikinDevices)
 
-// 4️⃣ Controllo dispositivo (es: setpoint)
+// 4️⃣ Controllo dispositivo (on-off)
 router.patch("/api/devices/:deviceId/managementPoints/climateControl", verifyDaikinAccessToken, conditionerController.DaikinOnOff);
 
 

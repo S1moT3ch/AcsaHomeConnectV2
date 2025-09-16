@@ -73,13 +73,14 @@ exports.DaikinOnOff = async (req, res, next) => {
         const resp = await axios.patch(
             `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/onOffMode`,
             {
-                "value": onOffMode
+                value: onOffMode
             },
             {
                 headers: {
                     Authorization: `Bearer ${req.accessToken}`,
                     "x-api-key": process.env.CLIENT_ID,
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "accept": "*/*"
                 }
             }
         );
