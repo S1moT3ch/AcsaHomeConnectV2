@@ -32,17 +32,7 @@ function DeviceControlMui({ device }) {
             const resp = await axios.patch(
                 `${BACKEND_URL}/api/devices/${device.id}/managementPoints/climateControl`,
                 {
-                    onOffMode: { value: onOff },
-                    operationMode: mode,
-                    temperatureControl: {
-                        operationModes: {
-                            [mode]: {
-                                setpoints: {
-                                    roomTemperature: { value: temperature }
-                                }
-                            }
-                        }
-                    }
+                    "value": onOff
                 },
                 { withCredentials: true }
             );
