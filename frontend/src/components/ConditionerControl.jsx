@@ -3,6 +3,12 @@ import axios from "axios";
 import {BACKEND_URL} from "../config/config";
 
 function ConditionerControl({ device }) {
+
+    const climateControl = device.managementPoints.find(
+        mp => mp.managementPointType === "climateControl"
+    );
+
+    const deviceName = climateControl?.name?.value || device.id;
     const [mode, setMode] = useState("cool");
     const [setpoint, setSetpoint] = useState(22);
     const [message, setMessage] = useState("");
@@ -24,8 +30,7 @@ function ConditionerControl({ device }) {
 
     return (
         <div className="border p-3 mb-3 rounded">
-            <h3 className="font-bold">{device.name}</h3>
-            <p>Tipo: {device.type}</p>
+            <h3 className="font-bold">{deviceName}</h3>
 
             <div className="mt-2">
                 <label className="block mb-1">Modalità</label>
