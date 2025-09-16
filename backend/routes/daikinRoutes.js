@@ -123,7 +123,7 @@ router.put('/api/devices/:id/control', verifyAccessToken, async (req, res) => {
             body,
             {
                 headers: {
-                    Authorization: `Bearer ${req.session.accessToken}`,
+                    Authorization: `Bearer ${req.accessToken}`,
                     "x-api-key": process.env.CLIENT_ID,
                     "Content-Type": "application/json"
                 }
