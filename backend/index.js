@@ -61,7 +61,7 @@ const PORT = process.env.PORT || 5000;
 
 //middleware definiti in ordine di esecuzione
 app.use(cors({
-    origin: "https://api.onecta.daikineurope.com",
+    origin: "http://localhost:3000",
     credentials: true
 }));
 

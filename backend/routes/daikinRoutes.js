@@ -99,7 +99,7 @@ router.get("/auth/daikin/callback", async (req, res) => {
 // 3️⃣ Lista dispositivi
 router.get("/api/devices", verifyAccessToken, async (req, res) => {
     try {
-        const resp = await axios.get("https://api.onecta.daikineurope.com/v1/devices", {
+        const resp = await axios.get("https://api.onecta.daikineurope.com/v1/gateway-devices", {
             headers: {
                 Authorization: `Bearer ${req.accessToken}`,
                 "x-api-key": process.env.CLIENT_ID
