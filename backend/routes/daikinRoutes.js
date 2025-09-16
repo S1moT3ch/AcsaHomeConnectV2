@@ -113,27 +113,43 @@ router.get("/api/devices", verifyAccessToken, async (req, res) => {
 });
 
 // 4️⃣ Controllo dispositivo (es: setpoint)
-router.put('/api/devices/:id/control', verifyAccessToken, async (req, res) => {
-    const deviceId = req.params.id;
-    const body = req.body; // es: { mode: "cool", setpoint: 22 }
+// PUT per controllare il climateControl di un device
+router.put(
+    "/api/devices/:deviceId/managementPoints/climateControl",
+    verifyAccessToken,
+    async (req, res) => {
+        const { deviceId } = req.params;
+        const { onOffMode, operationMode, temperatureControl } = req.body;
 
-    try {
-        const resp = await axios.put(
-            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}`,
-            body,
-            {
-                headers: {
-                    Authorization: `Bearer ${req.accessToken}`,
-                    "x-api-key": process.env.CLIENT_ID,
-                    "Content-Type": "application/json"
+        try {
+            // Chiamata all’API Daikin
+            const resp = await axios.put(
+                `https://api.onecta.daikineurope.com/v1/devices/${deviceId}`,
+                {
+                    managementPoints: {
+                        climateControl: {
+                            onOffMode,
+                            operationMode,
+                            temperatureControl
+                        }
+                    }
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${req.accessToken}`,
+                        "x-api-key": process.env.CLIENT_ID,
+                        "Content-Type": "application/json"
+                    }
                 }
-            }
-        );
-        res.json(resp.data);
-    } catch (err) {
-        console.error("Error controlling device:", err.response?.data || err.message);
-        res.status(500).send("Failed controlling device");
+            );
+
+            res.json(resp.data);
+        } catch (err) {
+            console.error("Errore controllando climateControl:", err.response?.data || err.message);
+            res.status(500).send("Errore durante il controllo del dispositivo");
+        }
     }
-});
+);
+
 
 module.exports = router;

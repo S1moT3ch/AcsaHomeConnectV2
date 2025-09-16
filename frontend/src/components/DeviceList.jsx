@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ConditionerControl from "./ConditionerControl";
+import DeviceControlMui from "./DeviceControlMui";
 import {BACKEND_URL} from "../config/config";
 
 function DeviceList() {
@@ -30,8 +31,9 @@ function DeviceList() {
         <div>
             <h2 className="text-xl font-bold mb-2">I tuoi dispositivi</h2>
             {devices.map((d) => (
-                <ConditionerControl key={d.id} device={d} />
+                <DeviceControlMui key={d.id} device={d} />
             ))}
+
         </div>
     );
 }
