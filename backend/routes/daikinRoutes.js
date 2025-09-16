@@ -4,36 +4,50 @@ const router = express.Router();
 const axios = require('axios');
 const qs = require('querystring');
 
+const UserToken = require("../models/UserToken");
+
+
 // Middleware per verificare access token e fare refresh se necessario
 async function verifyAccessToken(req, res, next) {
-    if (!req.session.accessToken) {
-        return res.status(401).send("Not authenticated");
+    const userId = "default"; // in futuro legalo all'utente loggato
+    let userToken = await UserToken.findOne({ userId });
+
+    if (!userToken) {
+        return res.status(401).send("Not authenticated with Daikin");
     }
 
-    // Controlla scadenza token
-    if (Date.now() > (req.session.tokenExpires || 0)) {
-        if (!req.session.refreshToken) return res.status(401).send("Refresh token missing");
+    // Se scaduto, rinnova con refresh token
+    if (new Date() > userToken.tokenExpires) {
         try {
             const tokenResp = await axios.post(
                 "https://idp.onecta.daikineurope.com/v1/oidc/token",
                 qs.stringify({
                     grant_type: "refresh_token",
-                    refresh_token: req.session.refreshToken,
+                    refresh_token: userToken.refreshToken,
                     client_id: process.env.CLIENT_ID,
                     client_secret: process.env.CLIENT_SECRET
                 }),
                 { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
             );
-            req.session.accessToken = tokenResp.data.access_token;
-            req.session.refreshToken = tokenResp.data.refresh_token;
-            req.session.tokenExpires = Date.now() + (tokenResp.data.expires_in * 1000);
+
+            const { access_token, refresh_token, expires_in } = tokenResp.data;
+
+            userToken.accessToken = access_token;
+            userToken.refreshToken = refresh_token || userToken.refreshToken;
+            userToken.tokenExpires = new Date(Date.now() + expires_in * 1000);
+            await userToken.save();
+
         } catch (err) {
             console.error("Refresh token error:", err.response?.data || err.message);
             return res.status(401).send("Could not refresh token");
         }
     }
+
+    // Attacca il token alla request
+    req.accessToken = userToken.accessToken;
     next();
 }
+
 
 // 1️⃣ Login Daikin: redirect all’authorize endpoint
 router.get('/auth/daikin', (req, res) => {
@@ -44,8 +58,8 @@ router.get('/auth/daikin', (req, res) => {
     res.redirect(authUrl);
 });
 
-// 2️⃣ Callback: riceve code e scambia token
-router.get('/auth/daikin/callback', async (req, res) => {
+// Callback OAuth2
+router.get("/auth/daikin/callback", async (req, res) => {
     const code = req.query.code;
     if (!code) return res.status(400).send("Missing code");
 
@@ -62,11 +76,20 @@ router.get('/auth/daikin/callback', async (req, res) => {
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
 
-        req.session.accessToken = tokenResp.data.access_token;
-        req.session.refreshToken = tokenResp.data.refresh_token;
-        req.session.tokenExpires = Date.now() + (tokenResp.data.expires_in * 1000);
+        const { access_token, refresh_token, expires_in } = tokenResp.data;
 
-        res.send("Login OK, token salvato!");
+        // salva in Mongo (per ora userId fisso "default", poi puoi collegarlo a un utente reale)
+        await UserToken.findOneAndUpdate(
+            { userId: "default" },
+            {
+                accessToken: access_token,
+                refreshToken: refresh_token,
+                tokenExpires: new Date(Date.now() + expires_in * 1000)
+            },
+            { upsert: true, new: true }
+        );
+
+        res.send("Login OK, token salvato in MongoDB!");
     } catch (err) {
         console.error("Token exchange error:", err.response?.data || err.message);
         res.status(500).send("Token exchange failed");
@@ -74,11 +97,11 @@ router.get('/auth/daikin/callback', async (req, res) => {
 });
 
 // 3️⃣ Lista dispositivi
-router.get('/api/devices', verifyAccessToken, async (req, res) => {
+router.get("/api/devices", verifyAccessToken, async (req, res) => {
     try {
         const resp = await axios.get("https://api.onecta.daikineurope.com/v1/devices", {
             headers: {
-                Authorization: `Bearer ${req.session.accessToken}`,
+                Authorization: `Bearer ${req.accessToken}`,
                 "x-api-key": process.env.CLIENT_ID
             }
         });
