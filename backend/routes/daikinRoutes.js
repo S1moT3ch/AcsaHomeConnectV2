@@ -4,7 +4,7 @@ const router = express.Router();
 const axios = require('axios');
 const qs = require('querystring');
 
-const UserToken = require("../models/UserToken");
+const UserToken = require("../models/userToken");
 
 
 // Middleware per verificare access token e fare refresh se necessario
