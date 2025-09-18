@@ -69,5 +69,6 @@ router.patch("/api/daikin/devices/:deviceId/mode", verifyDaikinAccessToken, cond
 
 router.patch("/api/daikin/devices/:deviceId/temperature", verifyDaikinAccessToken, conditionerController.DaikinTemperature);
 
+router.patch("/api/daikin/devices/:deviceId/fanSpeed", verifyDaikinAccessToken, conditionerController.DaikinFanSpeed);
 
 module.exports = router;

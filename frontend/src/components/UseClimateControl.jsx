@@ -24,6 +24,9 @@ export function useClimateControl(deviceId) {
                     case "temperature":
                         endpoint = "temperature";
                         break;
+                    case "fanSpeed":
+                        endpoint = "fanSpeed";
+                        break;
                     default:
                         throw new Error("Comando non supportato");
                 }

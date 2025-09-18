@@ -149,8 +149,19 @@ exports.DaikinFanSpeed = async (req, res) => {
 
     try {
         const resp = await axios.patch(
-            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/fanSpeed`,
-            { value },
+            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/fanControl`,
+            {
+                value: {
+                    operationModes: {
+                        cooling: {
+                            fanSpeed: {
+                                currentMode: { value: "fixed" },
+                                modes: { fixed: { value } } // esempio: value = 3
+                            }
+                        }
+                    }
+                }
+            },
             {
                 headers: {
                     Authorization: `Bearer ${req.accessToken}`,
