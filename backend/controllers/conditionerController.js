@@ -91,3 +91,99 @@ exports.DaikinOnOff = async (req, res, next) => {
         res.status(500).send("Errore durante il controllo del dispositivo");
     }
 }
+
+// ❄️ Modalità operativa
+exports.DaikinMode = async (req, res) => {
+    const { deviceId } = req.params;
+    const { value } = req.body; // "cooling" | "heating" | "auto" | "fan" | "dry"
+
+    try {
+        const resp = await axios.patch(
+            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/operationMode`,
+            { value: value },
+            {
+                headers: {
+                    Authorization: `Bearer ${req.accessToken}`,
+                    "x-api-key": process.env.CLIENT_ID,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        res.json(resp.data);
+    } catch (err) {
+        console.error("Errore Mode:", err.response?.data || err.message);
+        res.status(500).send("Errore Mode");
+    }
+};
+
+// 🌡️ Temperatura target
+exports.DaikinTemperature = async (req, res) => {
+    const { deviceId } = req.params;
+    const { value } = req.body; // es. 22.5
+
+    try {
+        const resp = await axios.patch(
+            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/temperatureControl`,
+            { value: value,
+                    path: "/operationModes/cooling/setpoints/roomTemperature",
+                },
+            {
+                headers: {
+                    Authorization: `Bearer ${req.accessToken}`,
+                    "x-api-key": process.env.CLIENT_ID,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        res.json(resp.data);
+    } catch (err) {
+        console.error("Errore Temp:", err.response?.data || err.message);
+        res.status(500).send("Errore Temperatura");
+    }
+};
+
+// 💨 Velocità ventola
+exports.DaikinFanSpeed = async (req, res) => {
+    const { deviceId } = req.params;
+    const { value } = req.body; // "auto" | "low" | "medium" | "high" | "quiet"
+
+    try {
+        const resp = await axios.patch(
+            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}/management-points/climateControl/characteristics/fanSpeed`,
+            { value },
+            {
+                headers: {
+                    Authorization: `Bearer ${req.accessToken}`,
+                    "x-api-key": process.env.CLIENT_ID,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+        res.json(resp.data);
+    } catch (err) {
+        console.error("Errore FanSpeed:", err.response?.data || err.message);
+        res.status(500).send("Errore FanSpeed");
+    }
+};
+
+// 📋 Stato dispositivo
+exports.DaikinStatus = async (req, res) => {
+    const { deviceId } = req.params;
+
+    try {
+        const resp = await axios.get(
+            `https://api.onecta.daikineurope.com/v1/gateway-devices/${deviceId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${req.accessToken}`,
+                    "x-api-key": process.env.CLIENT_ID,
+                    "accept": "application/json"
+                }
+            }
+        );
+        res.json(resp.data);
+    } catch (err) {
+        console.error("Errore Status:", err.response?.data || err.message);
+        res.status(500).send("Errore Stato");
+    }
+};

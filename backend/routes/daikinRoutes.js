@@ -60,8 +60,14 @@ router.get("/auth/daikin/callback", verifyDaikinAccessToken, conditionerControll
 // 3️⃣ Lista dispositivi
 router.get("/api/devices", verifyDaikinAccessToken, conditionerController.getDaikinDevices)
 
-// 4️⃣ Controllo dispositivo (on-off)
-router.patch("/api/devices/:deviceId/managementPoints/climateControl", verifyDaikinAccessToken, conditionerController.DaikinOnOff);
+router.get("/api/daikin/devices/:deviceId/status", verifyDaikinAccessToken, conditionerController.DaikinStatus)
+
+// 4️⃣ Controllo dispositivo
+router.patch("/api/daikin/devices/:deviceId/onOff", verifyDaikinAccessToken, conditionerController.DaikinOnOff);
+
+router.patch("/api/daikin/devices/:deviceId/mode", verifyDaikinAccessToken, conditionerController.DaikinMode);
+
+router.patch("/api/daikin/devices/:deviceId/temperature", verifyDaikinAccessToken, conditionerController.DaikinTemperature);
 
 
 module.exports = router;

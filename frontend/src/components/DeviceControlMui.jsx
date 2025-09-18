@@ -30,7 +30,7 @@ function DeviceControlMui({ device }) {
     const handleUpdate = async () => {
         try {
             const resp = await axios.patch(
-                `${BACKEND_URL}/api/devices/${device.id}/managementPoints/climateControl`,
+                `${BACKEND_URL}/api/devices/${device.id}/managementPoints/climateControl/characteristics/onOffMode`,
                 {
                     value: onOff
                 },
