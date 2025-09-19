@@ -80,7 +80,7 @@ app.use(session({
 //routes API
 app.use('/api/auth', authRoutes);
 app.use(daikinRoutes);
-app.use('/api/auth/netatmo', netatmoRoutes);
+app.use('/api/netatmo', netatmoRoutes);
 
 // Route di base per test
 app.get('/',(req, res) => {
