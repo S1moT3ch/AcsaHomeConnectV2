@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 import {
     Box,
-    Button,
-    Typography,
 } from "@mui/material";
 import {BACKEND_URL} from "../config/config";
 
@@ -52,28 +50,10 @@ const Login = () => {
         <Box className = "login-container container mt-4 p-4 shadow rounded">
 
             <div className="logo-container">
-                <img src="/StockPilot_icon_full_no_bg.png" alt="Logo StockPilot" className="logo"/>
+                <img src="/logo_full_AHC.png" alt="Logo AHC" className="logo mt-3"/>
             </div>
 
-            {/* se login == true, visualizza form login, altrimenti visualizza form registrazione */}
-            {isLogin ? (<LoginForm />) : (<RegisterForm setIsLogin={setIsLogin} />)}
-            <Typography
-                variant="body1"
-                className="custom-text text-center my-3"
-            >
-                {isLogin ? 'Sei un nuovo utente ?': 'Hai già un account?'}
-            </Typography>
-
-            <div className="d-flex justify-content-center">
-                <Button
-                    type="submit"
-                    variant="contained"
-                    onClick={toggleForm}
-                    className="submit-button"
-                >
-                    {isLogin ? 'Registrati' : 'Accedi'}
-                </Button>
-            </div>
+            <LoginForm />
         </Box>
     )
 };

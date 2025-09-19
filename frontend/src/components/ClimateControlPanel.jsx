@@ -3,16 +3,9 @@ import {
     Card,
     CardContent,
     Typography,
-    Divider,
-    Grid,
-    Slider,
-    Switch,
-    FormControlLabel,
-    ToggleButton,
-    ToggleButtonGroup,
-    IconButton,
-    Button
+    Box
 } from "@mui/material";
+
 import AcUnitIcon from "@mui/icons-material/AcUnit"; // Cooling
 import WhatshotIcon from "@mui/icons-material/Whatshot"; // Heating
 import OpacityIcon from "@mui/icons-material/Opacity"; // Dry
@@ -83,11 +76,14 @@ const ClimateControlPanel = ({ status, deviceId }) => {
     return (
         <div className="climate-wrapper">
             <Card className="climate-card">
+                <Box className="main-info d-flex justify-content-between">
+                    <img src="/DAIKIN_logo.svg.png" alt="Logo Daikin" style={{ height: 50 }} />
+                    <div>
+                        <h5 className="climate-title mb-3">Controllo Climatizzatore</h5>
+                        <h5 className="climate-title mb-3">{localStatus.name}</h5>
+                    </div>
+                </Box>
                 <CardContent>
-                    <h5 className="climate-title mb-3">Controllo Climatizzatore</h5>
-                    <h5 className="climate-title mb-3">{localStatus.name}</h5>
-
-
                     {/* Pulsante Power */}
                     <div className="d-flex justify-content-center mb-4">
                         <button

@@ -17,10 +17,9 @@ import {
 //import delle icone
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import ChatIcon from '@mui/icons-material/Chat';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -79,19 +78,17 @@ const Menu = () => {
     const menuItems = [
         { label: 'Dashboard', path: '/user'},
         { label: 'Area Riservata', path: '/profile' },
-        { label: 'Ordini' , path: '/orders' },
-        { label: 'Consegne' , path: '/deliveries' },
-        { label: 'Catalogo' , path: '/catalogue' },
-        { label: 'Chat' , path: '/chat' },
+        { label: 'Climatizzazione' , path: '/conditioners' },
+        { label: 'Riscaldamento' , path: '/heating' },
+        { label: 'Lavastoviglie' , path: '/Dishwasher' }
     ];
 
     const iconMap = {
         '/user' : <DashboardIcon sx={{ color: '#ffffff'}} />,
         '/profile' : <AccountCircleIcon sx={{ color: '#ffffff'}}/>,
-        '/orders' : <ShoppingCartIcon sx={{ color: '#ffffff'}} />,
-        '/deliveries' : <LocalShippingIcon sx={{ color: '#ffffff'}} />,
-        '/catalogue' : <StorefrontIcon sx={{ color: '#ffffff'}} />,
-        '/chat' : <ChatIcon sx={{ color: '#ffffff'}} />,
+        '/conditioners' : <AcUnitIcon sx={{ color: '#ffffff'}} />,
+        '/heating' : <WhatshotIcon sx={{ color: '#ffffff'}} />,
+        '/Dishwasher' : <LocalLaundryServiceIcon sx={{ color: '#ffffff'}} />,
         logout : <LogoutIcon sx={{ color: 'red'}} />
     }
 

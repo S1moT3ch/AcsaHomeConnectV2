@@ -11,6 +11,7 @@ const session = require("express-session");
 //routers
 const authRoutes = require('./routes/authRoutes');
 const daikinRoutes = require('./routes/daikinRoutes');
+const netatmoRoutes = require('./routes/netatmoRoutes');
 
 const app = express(); //creazione dell'app con il framework express
 const server = http.createServer(app); //creazione server http con l'app Express come parametro
@@ -79,6 +80,7 @@ app.use(session({
 //routes API
 app.use('/api/auth', authRoutes);
 app.use(daikinRoutes);
+app.use('/api/auth/netatmo', netatmoRoutes);
 
 // Route di base per test
 app.get('/',(req, res) => {

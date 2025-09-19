@@ -58,17 +58,17 @@ router.get('/auth/daikin', verifyDaikinAccessToken, conditionerController.regist
 router.get("/auth/daikin/callback", verifyDaikinAccessToken, conditionerController.callbackDaikin)
 
 // 3️⃣ Lista dispositivi
-router.get("/api/devices", verifyDaikinAccessToken, conditionerController.getDaikinDevices)
+router.get("/api/daikin/devices", verifyAccessToken, verifyDaikinAccessToken, conditionerController.getDaikinDevices)
 
-router.get("/api/daikin/devices/:deviceId/status", verifyDaikinAccessToken, conditionerController.DaikinStatus)
+router.get("/api/daikin/devices/:deviceId/status", verifyAccessToken, verifyDaikinAccessToken, conditionerController.DaikinStatus)
 
 // 4️⃣ Controllo dispositivo
-router.patch("/api/daikin/devices/:deviceId/onOff", verifyDaikinAccessToken, conditionerController.DaikinOnOff);
+router.patch("/api/daikin/devices/:deviceId/onOff", verifyAccessToken, verifyDaikinAccessToken, conditionerController.DaikinOnOff);
 
-router.patch("/api/daikin/devices/:deviceId/mode", verifyDaikinAccessToken, conditionerController.DaikinMode);
+router.patch("/api/daikin/devices/:deviceId/mode", verifyAccessToken, verifyDaikinAccessToken, conditionerController.DaikinMode);
 
-router.patch("/api/daikin/devices/:deviceId/temperature", verifyDaikinAccessToken, conditionerController.DaikinTemperature);
+router.patch("/api/daikin/devices/:deviceId/temperature", verifyAccessToken, verifyDaikinAccessToken, conditionerController.DaikinTemperature);
 
-router.patch("/api/daikin/devices/:deviceId/fanSpeed", verifyDaikinAccessToken, conditionerController.DaikinFanSpeed);
+router.patch("/api/daikin/devices/:deviceId/fanSpeed", verifyAccessToken, verifyDaikinAccessToken, conditionerController.DaikinFanSpeed);
 
 module.exports = router;

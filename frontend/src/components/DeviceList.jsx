@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ClimateControlContainer from "./ClimateControlContainer";
 import { BACKEND_URL } from "../config/config";
+import {
+    Box,
+} from "@mui/material";
+import Bar from "./Bar";
 
 function DeviceList() {
     const [devices, setDevices] = useState([]);
@@ -45,7 +49,12 @@ function DeviceList() {
 
         const fetchDevices = async () => {
             try {
-                const resp = await axios.get(`${BACKEND_URL}/api/devices`, {
+                const token = localStorage.getItem('accessToken');
+                const resp = await axios.get(`${BACKEND_URL}/api/daikin/devices`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization:  `Bearer ${token}`,
+                    },
                     withCredentials: true,
                     signal: controller.signal, // lega la richiesta all'AbortController
                 });
@@ -74,20 +83,33 @@ function DeviceList() {
     if (loading) return <p>Caricamento...</p>;
 
     return (
-        <div>
-            <h2 className="text-xl font-bold mb-2">I tuoi dispositivi</h2>
-            {devices.map((d) => {
-                const status = statuses.find((s) => s?.id === d.id);
-                return (
-                    <ClimateControlContainer
-                        key={d.id}
-                        deviceId={d.id}
-                        status={status ?? {}} // fallback oggetto vuoto
-                    />
-                );
-            })}
-        </div>
+        <Box>
+            <Bar />
+            <div className="container mt-4">
+                <div className="card shadow-sm p-3 mb-4">
+                    <h2 className="card-title h4 mb-3 text-primary fw-bold">
+                        I tuoi dispositivi
+                    </h2>
+                    <div className="row">
+                        {devices.map((d) => {
+                            const status = statuses.find((s) => s?.id === d.id);
+                            return (
+                                <div className="d-flex justify-content-evenly" key={d.id}>
+                                    <div className="card h-100 border-0 shadow-sm">
+                                        <div className="card-body">
+                                            <ClimateControlContainer
+                                                deviceId={d.id}
+                                                status={status ?? {}} // fallback oggetto vuoto
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        </Box>
     );
 }
-
 export default DeviceList;

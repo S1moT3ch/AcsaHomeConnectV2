@@ -13,6 +13,7 @@ export function useClimateControl(deviceId) {
     const sendCommand = useCallback(
         async (type, value) => {
             try {
+                const token = localStorage.getItem('accessToken');
                 let endpoint = "";
                 switch (type) {
                     case "onOff":
@@ -31,7 +32,15 @@ export function useClimateControl(deviceId) {
                         throw new Error("Comando non supportato");
                 }
 
-                await axios.patch(`${BACKEND_URL}/api/daikin/devices/${deviceId}/${endpoint}`, { value });
+                await axios.patch(`${BACKEND_URL}/api/daikin/devices/${deviceId}/${endpoint}`,
+                    { value },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization:  `Bearer ${token}`,
+                        },
+                        withCredentials: true,
+                    });
 
             } catch (err) {
                 console.error("Errore comando:", err);
